@@ -4,6 +4,7 @@ from PyQt6.QtGui import QFont
 from dataclasses import dataclass
 from typing import Literal
 from .colors import Colors
+from ..utils import Fonts
 
 
 TypographyVariant = Literal["h1", "h2", "h3", "h4", "h5", "h6", "t", "p", "b", "c"]
@@ -55,7 +56,10 @@ class Typography(QLabel):
 
         config = VARIANT_CONFIG[variant]
 
-        font = QFont("Inter")
+        loc_font = Fonts()
+        loc_font.load_fonts()
+
+        font = QFont("Plus Jakarta Sans")
         font.setPointSize(config.font_size)
         font.setWeight(WEIGHT_MAP[weight])
         self.setFont(font)

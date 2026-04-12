@@ -66,7 +66,7 @@ class Showcase(QWidget):
         self._divider(root, "Button Variants")
 
         row1 = HBox(spacing=12)
-        for v in ["primary", "success", "warning", "error", "info"]:
+        for v in ["primary", "success", "warning", "error"]:
             row1.addWidget(Button(v.capitalize(), variant=v))
         root.addLayout(row1)
 

@@ -1,4 +1,5 @@
 from .colors          import Colors
+from .image           import Image
 from .typography      import Typography
 from .button          import Button
 from .layout          import VBox, HBox
@@ -10,6 +11,7 @@ from .line_chart      import LineChart
 
 __all__ = [
     "Colors",
+    "Image",
     "Typography",
     "Button",
     "VBox",

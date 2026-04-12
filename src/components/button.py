@@ -5,7 +5,7 @@ from typing import Literal, Optional
 from .colors import Colors
 
 
-ButtonVariant = Literal["primary", "success", "warning", "error", "info", "alternative", "outlined"]
+ButtonVariant = Literal["primary", "success", "warning", "error", "alternative", "outlined"]
 ButtonSize    = Literal["sm", "md", "lg"]
 
 
@@ -45,16 +45,6 @@ _VARIANT_STYLE: dict[str, dict] = {
         "bg_hover":        Colors.error_hover,
         "bg_active":       Colors.error_active,
         "bg_disabled":     Colors.error_active,
-        "text":            Colors.neutral_white,
-        "text_disabled":   Colors.neutral_60,
-        "border":          "none",
-        "border_disabled": f"1px solid {Colors.neutral_60}",
-    },
-    "info": {
-        "bg":              Colors.info_main,
-        "bg_hover":        Colors.info_hover,
-        "bg_active":       Colors.info_active,
-        "bg_disabled":     Colors.neutral_30,
         "text":            Colors.neutral_white,
         "text_disabled":   Colors.neutral_60,
         "border":          "none",
