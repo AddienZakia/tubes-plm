@@ -1,4 +1,4 @@
-# 📘 Panduan Git untuk Pemula
+# Panduan Git
 
 Panduan singkat penggunaan Git dari awal hingga kolaborasi bareng teman.
 
@@ -10,9 +10,6 @@ Panduan singkat penggunaan Git dari awal hingga kolaborasi bareng teman.
 2. [Konsep Dasar](#2-konsep-dasar)
 3. [Memulai Repository](#3-memulai-repository)
 4. [Workflow Harian](#4-workflow-harian)
-5. [Menghubungkan ke GitHub](#5-menghubungkan-ke-github)
-6. [Kolaborasi](#6-kolaborasi)
-7. [Cheat Sheet](#7-cheat-sheet)
 
 ---
 
@@ -105,7 +102,6 @@ git status
 **Langkah 2 — Tambahkan file ke staging**
 
 ```bash
-git add nama-file.txt   # file tertentu
 git add .               # semua file yang berubah
 ```
 
@@ -123,141 +119,4 @@ git commit -m "Tambah halaman login"
 git push
 ```
 
-**Ambil update dari GitHub (lakukan ini setiap mulai kerja)**
-
-```bash
-git pull
-```
-
-**Lihat riwayat commit**
-
-```bash
-git log --oneline
-```
-
 ---
-
-## 5. Menghubungkan ke GitHub
-
-### Buat repo baru di GitHub
-
-1. Login ke [github.com](https://github.com)
-2. Klik tombol **New** (hijau) atau ikon **+**
-3. Isi nama repo, pilih Public atau Private
-4. **Jangan** centang _Initialize with README_ jika proyekmu sudah ada di komputer
-5. Klik **Create repository**
-
-### Hubungkan repo lokal ke GitHub
-
-```bash
-# Tambahkan alamat GitHub
-git remote add origin https://github.com/username/nama-repo.git
-
-# Upload pertama kali
-git push -u origin main
-```
-
-> Setelah push pertama, selanjutnya cukup `git push` saja.
-
----
-
-## 6. Kolaborasi
-
-### Alur kolaborasi yang direkomendasikan
-
-1. Branch `main` selalu bersih — ini milik bersama, jangan langsung edit di sini
-2. Tiap orang bikin branch sendiri untuk setiap fitur/tugas
-3. Selesai, push branch lalu buat **Pull Request** di GitHub
-4. Review bareng, baru di-merge ke `main`
-
-### Perintah branch
-
-```bash
-# Lihat semua branch
-git branch
-
-# Buat branch baru sekaligus pindah ke sana
-git checkout -b nama-branch
-
-# Pindah ke branch yang sudah ada
-git checkout main
-
-# Upload branch ke GitHub
-git push -u origin nama-branch
-```
-
-### Buat Pull Request (PR)
-
-1. Setelah push branch, buka GitHub — ada banner kuning muncul otomatis
-2. Klik **Compare & pull request**
-3. Tulis judul dan deskripsi singkat apa yang dikerjakan
-4. Klik **Create pull request**
-5. Minta temanmu review → kalau sudah oke, klik **Merge**
-
-### Menangani conflict
-
-Conflict terjadi kalau dua orang edit bagian yang sama. Git akan menandainya seperti ini:
-
-```
-kode milikmu
-```
-
-Cara menyelesaikannya:
-
-1. Buka file yang conflict
-2. Pilih mana yang mau dipakai (atau gabungkan keduanya)
-3. Hapus semua tanda `<<<<<<<`, `=======`, dan `>>>>>>>`
-4. Jalankan `git add .` lalu `git commit`
-
----
-
-## 7. Cheat Sheet
-
-```bash
-# Setup
-git config --global user.name "Nama"
-git config --global user.email "email"
-
-# Repo
-git init                    # buat repo baru
-git clone <url>             # clone dari GitHub
-
-# Sehari-hari
-git status                  # cek kondisi file
-git add .                   # tambah semua ke staging
-git add <file>              # tambah file tertentu
-git commit -m "pesan"       # simpan dengan pesan
-git push                    # upload ke GitHub
-git pull                    # ambil update dari GitHub
-git log --oneline           # lihat riwayat ringkas
-
-# Branch
-git branch                  # lihat semua branch
-git checkout -b nama        # buat & pindah branch baru
-git checkout main           # pindah ke branch main
-git push -u origin nama     # upload branch ke GitHub
-
-# Batalkan perubahan
-git checkout -- <file>      # buang perubahan (belum di-add)
-git reset HEAD <file>       # batalkan git add
-```
-
----
-
-## File `.gitignore`
-
-Buat file bernama `.gitignore` di root proyekmu untuk memberitahu Git file apa yang **tidak** perlu dilacak.
-
-```gitignore
-# Contoh isi .gitignore
-node_modules/
-.env
-*.log
-.DS_Store
-```
-
-> ⚠️ File `.env` biasanya berisi password/API key — **selalu** masukkan ke `.gitignore`!
-
----
-
-_Panduan ini dibuat untuk membantu kolaborasi antar anggota tim yang baru mengenal Git._
