@@ -29,7 +29,6 @@ class MainWindow(QMainWindow):
             weight="bold"
         )
 
-        layout.addWidget(button)
         layout.addWidget(placeholder)
 
         self.setCentralWidget(central)
