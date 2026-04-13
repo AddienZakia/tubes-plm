@@ -73,9 +73,9 @@ _VARIANT_STYLE: dict[str, dict] = {
 }
 
 _SIZE_STYLE: dict[str, dict] = {
-    "sm": {"padding": "6px 16px", "font_size": 12},
-    "md": {"padding": "8px 16px", "font_size": 13},
-    "lg": {"padding": "10px 16px", "font_size": 14},
+    "sm": {"padding": "6px 16px", "font_size": 14},
+    "md": {"padding": "8px 16px", "font_size": 16},
+    "lg": {"padding": "10px 16px", "font_size": 16},
 }
 
 
@@ -107,6 +107,10 @@ class Button(QPushButton):
 
         border          = v["border"] or "none"
         border_disabled = v["border_disabled"] or "none"
+        
+        font = QFont("Plus Jakarta Sans", s["font_size"])
+        font.setWeight(QFont.Weight.Medium)
+        self.setFont(font)
 
         self.setStyleSheet(f"""
             QPushButton {{
@@ -116,7 +120,7 @@ class Button(QPushButton):
                 border-radius:    6px;
                 padding:          {s["padding"]};
                 font-size:        {s["font_size"]}px;
-                font-family:      Inter;
+                font-family: "Plus Jakarta Sans";
                 font-weight:      500;
             }}
             QPushButton:hover {{
@@ -132,3 +136,4 @@ class Button(QPushButton):
                 cursor:           not-allowed;
             }}
         """)
+        

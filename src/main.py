@@ -1,21 +1,15 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QSizePolicy
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFontDatabase, QFont
 from src.components import Typography, VBox, Colors
-import os
+from .components import Button
+from .utils import Fonts
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("FCM Clustering App")
         self.setFixedSize(1000, 750)
-
-        # load fonts
-        loc_fonts = os.listdir("assets/fonts")
-        for font in loc_fonts:
-            QFontDatabase.addApplicationFont(os.path.join("assets/fonts", font))
-
 
         central = QWidget()
         central.setStyleSheet(f"background-color: {Colors.neutral_10};")
@@ -26,6 +20,7 @@ class MainWindow(QMainWindow):
         )
         central.setLayout(layout)
 
+
         placeholder = Typography(
             "FCM Clustering — coming soon",
             variant="h5",
@@ -33,6 +28,8 @@ class MainWindow(QMainWindow):
             align=Qt.AlignmentFlag.AlignCenter,
             weight="bold"
         )
+
+        layout.addWidget(button)
         layout.addWidget(placeholder)
 
         self.setCentralWidget(central)
@@ -41,6 +38,8 @@ class MainWindow(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
+    Fonts().load_fonts()
+
     win = MainWindow()
     win.show()
     sys.exit(app.exec())
