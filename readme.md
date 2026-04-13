@@ -41,4 +41,4 @@ python -m src.sandbox.main
 ### Panduan
 
 - Cara Menggunakan Git pada Project: [Panduan Git](panduan/git.md)
-- Fungsionalitas pada PyQt6 sesuai dengan Component yang dibuat: [Fungsionalitas PyQt5](panduan/file.md)
+- Fungsionalitas pada PyQt6 sesuai dengan Component yang dibuat: [Fungsionalitas PyQt6](panduan/file.md)
