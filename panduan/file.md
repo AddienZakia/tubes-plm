@@ -141,23 +141,6 @@ Image(src="assets/images/logo.png")
 
 # dengan ukuran fix
 Image(src="assets/images/banner.jpg", width=400, height=200)
-
-# object_fit: contain | cover | fill
-Image(src="assets/images/foto.jpg", width=80, height=80, object_fit="cover")    # crop tengah
-Image(src="assets/images/foto.jpg", width=80, height=80, object_fit="contain")  # scale in-bounds
-Image(src="assets/images/foto.jpg", width=80, height=80, object_fit="fill")     # stretch
-
-# rounded (cocok buat avatar)
-Image(src="assets/images/avatar.png", width=80, height=80, rounded=40, object_fit="cover")
-
-# fallback text kalau gambar ga ada
-Image(src="path/salah.png", alt="Gambar tidak ditemukan")
-
-# set dinamis setelah dibuat
-img = Image(width=200, height=200)
-img.set_src("assets/images/foto.jpg")
-img.set_size(300, 150)
-img.set_object_fit("cover")
 ```
 
 ---
