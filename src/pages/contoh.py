@@ -6,7 +6,7 @@ from src.utils.font import Fonts
 from src.utils.layout import AppLayout  
 
 from src.components.pagination_table import PaginationTable
-from src.components.layout import HBox, VBox
+from src.components import HBox, VBox
 
 class MainWindow(QMainWindow):
     def __init__(self):

@@ -11,9 +11,15 @@ class Table(QTableWidget):
         columns: list[str],
         rows: list[list] = [],
         stretch_last: bool = True,
+        col_widths: Optional[dict[str | int, int]] = None,   # bisa nama atau index
+        col_aligns: Optional[dict[str | int, Qt.AlignmentFlag]] = None,
         parent=None,
     ):
         super().__init__(parent)
+
+        self.columns     = columns
+        self._col_widths = self._resolve(col_widths or {}, columns)
+        self._col_aligns = self._resolve(col_aligns or {}, columns)
 
         self.columns = columns
         self.setColumnCount(len(columns))
@@ -26,9 +32,19 @@ class Table(QTableWidget):
         self.setShowGrid(False)
 
         header = self.horizontalHeader()
-        if stretch_last:
-            header.setStretchLastSection(True)
+        header.setStretchLastSection(False)  
         header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+
+        # Apply col_widths
+        for col_idx, width in self._col_widths.items():
+            header.setSectionResizeMode(col_idx, QHeaderView.ResizeMode.Fixed)
+            self.setColumnWidth(col_idx, width)
+
+        # Stretch kolom terakhir kalau tidak di-set manual
+        if stretch_last:
+            last = len(columns) - 1
+            if last not in self._col_widths:
+                header.setSectionResizeMode(last, QHeaderView.ResizeMode.Stretch)
 
         self._apply_style()
 
@@ -82,7 +98,13 @@ class Table(QTableWidget):
         for row_idx, row_data in enumerate(rows):
             for col_idx, value in enumerate(row_data):
                 item = QTableWidgetItem(str(value))
-                item.setTextAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
+
+                # pakai col_aligns kalau ada, fallback ke AlignLeft
+                align = self._col_aligns.get(
+                    col_idx,
+                    Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft
+                )
+                item.setTextAlignment(align)
                 self.setItem(row_idx, col_idx, item)
 
         self.resizeRowsToContents()
@@ -96,5 +118,21 @@ class Table(QTableWidget):
 
         for col_idx, value in enumerate(row_data):
             item = QTableWidgetItem(str(value))
-            item.setTextAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
+            align = self._col_aligns.get(
+                col_idx,
+                Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft
+            )
+            item.setTextAlignment(align)
             self.setItem(row_idx, col_idx, item)
+
+    @staticmethod
+    def _resolve(d: dict, columns: list[str]) -> dict[int, any]:
+        """Konversi key nama kolom → index, biarkan key int tetap."""
+        result = {}
+        for k, v in d.items():
+            if isinstance(k, str):
+                if k in columns:
+                    result[columns.index(k)] = v
+            else:
+                result[k] = v
+        return result

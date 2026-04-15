@@ -33,8 +33,8 @@ class AppLayout(QWidget):
         header = HBox(spacing=0, margin=(0, 0, 0, 14))
 
         brand = HBox(spacing=6, margin=(0, 0, 0, 0))
-        brand.addWidget(Typography("FCM", variant='h4', weight="bold", color=Colors.primary_hover))
-        brand.addWidget(Typography("Clustering App", variant='h4', weight="bold", color=Colors.neutral_black))
+        brand.addWidget(Typography("FCM", variant='h5', weight="bold", color=Colors.primary_hover))
+        brand.addWidget(Typography("Clustering App", variant='h5', weight="bold", color=Colors.neutral_black))
 
         # Stepper
         stepper = self._build_stepper(current_step)
@@ -57,6 +57,9 @@ class AppLayout(QWidget):
             QSizePolicy.Policy.Expanding,
         )
         self.content_layout = VBox(spacing=0, margin=(16, 16, 16, 16))
+        self.content_layout.setSizeConstraint(
+            QVBoxLayout.SizeConstraint.SetMinAndMaxSize
+        )
         self.content_frame.setLayout(self.content_layout)
 
         root.addLayout(header)
@@ -64,7 +67,7 @@ class AppLayout(QWidget):
 
         outer = VBox(spacing=0, margin=(0, 0, 0, 0))
         outer.addWidget(bg)
-        self.setLayout(outer)  # <-- pakai outer, bukan root
+        self.setLayout(outer)
 
     def _build_stepper(self, current_step):
         steps = [(1, "Upload"), (2, "Preprocessing"), (3, "Run"), (4, "Result")]
@@ -89,25 +92,25 @@ class AppLayout(QWidget):
         layout = HBox(spacing=4, margin=(0, 0, 0, 0), align=Qt.AlignmentFlag.AlignVCenter)
 
         if num < current_step:
-            circle = Typography("✓", variant='b', weight="bold", color=Colors.primary_active)
+            circle = Typography("✓", variant='c', weight="bold", color=Colors.primary_active)
             circle.setFixedSize(24, 24)
             circle.setAlignment(Qt.AlignmentFlag.AlignCenter)
             circle.setStyleSheet("background-color: #22c55e; border-radius: 12px;")
             label_color = "#22c55e"
         elif num == current_step:
-            circle = Typography(str(num), variant='b', weight="bold", color=Colors.primary_main)
+            circle = Typography(str(num), variant='c', weight="bold", color=Colors.primary_main)
             circle.setFixedSize(24, 24)
             circle.setAlignment(Qt.AlignmentFlag.AlignCenter)
             circle.setStyleSheet(f"border: 1.5px solid {Colors.primary_hover}; border-radius: 12px; color: {Colors.primary_main}")
             label_color = Colors.primary_hover
         else:
-            circle = Typography(str(num), variant='b', color=Colors.primary_active)
+            circle = Typography(str(num), variant='c', color=Colors.primary_active)
             circle.setFixedSize(24, 24)
             circle.setAlignment(Qt.AlignmentFlag.AlignCenter)
             circle.setStyleSheet("border: 1.5px solid #d1d5db; border-radius: 12px;")
             label_color = Colors.neutral_40
 
-        lbl = Typography(label, variant='b', color=label_color)
+        lbl = Typography(label, variant='c', color=label_color)
         layout.addWidget(circle)
         layout.addWidget(lbl)
         return layout
