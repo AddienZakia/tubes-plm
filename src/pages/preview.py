@@ -3,12 +3,15 @@ import sys, os, csv
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QSizePolicy,
     QLabel, QFrame, QPushButton,
-    QTableWidget, QTableWidgetItem, QHeaderView, QAbstractItemView, QScrollArea
+    QTableWidget, QTableWidgetItem, QHeaderView, QAbstractItemView, QScrollArea, QApplication, QMainWindow
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QColor
 
-CSV_PATH = r"C:\Users\najwa\Downloads\Generated Data.csv"
+from src.utils.font import Fonts
+from src.utils.layout import AppLayout  
+
+CSV_PATH = r"src/contents/dataset.csv"
 
 
 def load_data():
@@ -186,7 +189,7 @@ class YearFilterRow(QWidget):
         self.on_change(year)
 
 
-class main(QWidget):
+class Preview(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
@@ -266,3 +269,25 @@ class main(QWidget):
 
     def _apply_filter(self, year: str):
         self.table.set_rows(self.data[year])
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setFixedSize(1000, 750)
+
+        self.app_layout = AppLayout(current_step=2)
+
+        isi = Preview()
+        self.app_layout.set_content(isi)
+
+        self.setCentralWidget(self.app_layout)
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    app.setStyle("Fusion")
+    Fonts().load_fonts()
+
+    win = MainWindow()
+    win.show()
+    sys.exit(app.exec())
