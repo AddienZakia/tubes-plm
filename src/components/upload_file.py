@@ -26,10 +26,10 @@ class UploadFile(QWidget):
 
         self.setAcceptDrops(True)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.setFixedHeight(height)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
 
         layout = VBox(spacing=6, align=Qt.AlignmentFlag.AlignCenter)
+        
         self.setLayout(layout)
 
         self.icon_label = Typography("📂", variant="h4", align=Qt.AlignmentFlag.AlignCenter)
@@ -53,17 +53,7 @@ class UploadFile(QWidget):
     def _apply_style(self, active: bool = False):
         border_color = Colors.primary_main if active else Colors.neutral_40
         bg_color     = Colors.neutral_10 if not active else "#EFF6FF"
-        self.setStyleSheet(f"""
-            UploadFile {{
-                border:        2px dashed {border_color};
-                border-radius: 8px;
-                background:    {bg_color};
-            }}
-            UploadFile:hover {{
-                border-color:  {Colors.primary_main};
-                background:    #EFF6FF;
-            }}
-        """)
+
 
     # ── mouse click ──────────────────────────────────────────────
     def mousePressEvent(self, event):

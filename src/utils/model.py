@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 from .file import Files
 
 class Utilitas(Files):
-    def __init__(self):
-        super().__init__()
-        self.read_data_csv()
+    def __init__(self, path):
+        super().__init__(path)
+        self.read_data_csv(path)
     
     # convert dari Object country data ke Object per fitur
     def to_object_fitur(self):
@@ -48,9 +48,9 @@ class FCM(Utilitas):
         Women_GenX_2018, Women_GenX_2021 (14 features - berurutan)
     """
 
-    def __init__(self, C, m, Year=None):
-        super().__init__()
-        self.read_data_csv()
+    def __init__(self, C, m, path, Year=None):
+        super().__init__(path)
+        self.read_data_csv(path=path)
 
         self.total_fitur = len(list(self.data.values()))
         self.total_country = len(list(self.data.keys()))
@@ -320,7 +320,7 @@ class FCM(Utilitas):
 # model_2021.fit()
 # model_2021.visualize(title="E-Commerce 2021")
 
-def elbow(c_range=range(2, 9), m=2, max_iter=100, epsilon=1e-4):
+def elbow(path, c_range=range(2, 9), m=2, max_iter=100, epsilon=1e-4):
     J_list = []
 
     print(f"\n{'─'*40}")
@@ -330,7 +330,7 @@ def elbow(c_range=range(2, 9), m=2, max_iter=100, epsilon=1e-4):
     print(f"{'─'*40}")
 
     for c in c_range:
-        model = FCM(C=c, m=m)
+        model = FCM(C=c, m=m, path=path)
         model.fit(max_iter=max_iter, epsilon=epsilon)
         J_akhir = model.history_J[-1]
         n_iter  = model.n_iter if hasattr(model, 'n_iter') else '-'
@@ -350,4 +350,4 @@ def elbow(c_range=range(2, 9), m=2, max_iter=100, epsilon=1e-4):
     plt.tight_layout()
     plt.show()
 
-elbow(c_range=range(2, 8))
+# elbow(c_range=range(2, 8))

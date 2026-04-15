@@ -26,15 +26,15 @@ class AppLayout(QWidget):
             os.path.join(base_dir, "../../assets/image/layout-bg.png")
         )
 
-        root = VBox(spacing=0, margin=(16, 16, 16, 16))
+        root = VBox(spacing=0, margin=(32, 20, 32, 20))
         bg = BgWidget(image_path)
         bg.setLayout(root)
 
         header = HBox(spacing=0, margin=(0, 0, 0, 14))
 
         brand = HBox(spacing=6, margin=(0, 0, 0, 0))
-        brand.addWidget(Typography("FCM", variant='h5', weight="bold", color=Colors.primary_hover))
-        brand.addWidget(Typography("Clustering App", variant='h5', weight="bold", color=Colors.neutral_black))
+        brand.addWidget(Typography("FCM", variant='t', weight="bold", color=Colors.primary_hover))
+        brand.addWidget(Typography("Clustering App", variant='t', weight="bold", color=Colors.neutral_black))
 
         # Stepper
         stepper = self._build_stepper(current_step)
