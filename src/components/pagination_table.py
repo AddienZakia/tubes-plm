@@ -14,9 +14,13 @@ class PaginationTable(QWidget):
         columns: list[str],
         rows: list[list] = [],
         page_size: int = 10,
+        col_widths: Optional[dict[int, int]] = None,
+        col_aligns: Optional[dict[int, Qt.AlignmentFlag]] = None,
         parent=None,
     ):
         super().__init__(parent)
+
+        
 
         self._all_rows  = rows
         self._page_size = page_size
@@ -26,28 +30,34 @@ class PaginationTable(QWidget):
         self.setLayout(layout)
 
         # ── table ─────────────────────────────────────────────────
-        self.table = Table(columns=columns)
+        self.table = Table(
+            columns=columns,
+            col_widths=col_widths,
+            col_aligns=col_aligns,
+        )
         layout.addWidget(self.table)
 
         # ── pagination bar ────────────────────────────────────────
         bar = QWidget()
-        bar_layout = HBox(spacing=8, align=Qt.AlignmentFlag.AlignRight)
+        bar_layout = HBox(spacing=8, align=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignRight)
         bar.setLayout(bar_layout)
 
         self.info_label = Typography("", variant="c", color=Colors.neutral_60)
-        bar_layout.addWidget(self.info_label)
+        self.info_label.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
+        bar_layout.addWidget(self.info_label, alignment=Qt.AlignmentFlag.AlignVCenter)
         bar_layout.addStretch()
 
         self.btn_prev = Button("← Prev", variant="outlined", size="sm")
         self.btn_prev.clicked.connect(self._prev_page)
-        bar_layout.addWidget(self.btn_prev)
+        bar_layout.addWidget(self.btn_prev, alignment=Qt.AlignmentFlag.AlignVCenter)
 
         self.page_label = Typography("", variant="c", color=Colors.neutral_70)
-        bar_layout.addWidget(self.page_label)
+        self.page_label.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
+        bar_layout.addWidget(self.page_label, alignment=Qt.AlignmentFlag.AlignVCenter)
 
         self.btn_next = Button("Next →", variant="outlined", size="sm")
         self.btn_next.clicked.connect(self._next_page)
-        bar_layout.addWidget(self.btn_next)
+        bar_layout.addWidget(self.btn_next, alignment=Qt.AlignmentFlag.AlignVCenter)
 
         layout.addWidget(bar)
 

@@ -18,15 +18,15 @@ class TypographyConfig:
 
 
 VARIANT_CONFIG: dict[str, TypographyConfig] = {
-    "h1": TypographyConfig(font_size=32, line_height=1.2),
-    "h2": TypographyConfig(font_size=28, line_height=1.2),
-    "h3": TypographyConfig(font_size=24, line_height=1.25),
-    "h4": TypographyConfig(font_size=20, line_height=1.3),
-    "h5": TypographyConfig(font_size=18, line_height=1.3),
-    "h6": TypographyConfig(font_size=16, line_height=1.4),
-    "t":  TypographyConfig(font_size=15, line_height=1.4),
-    "p":  TypographyConfig(font_size=14, line_height=1.5),
-    "b":  TypographyConfig(font_size=13, line_height=1.5),
+    "h1": TypographyConfig(font_size=80, line_height=1.2),
+    "h2": TypographyConfig(font_size=72, line_height=1.2),
+    "h3": TypographyConfig(font_size=60, line_height=1.25),
+    "h4": TypographyConfig(font_size=48, line_height=1.3),
+    "h5": TypographyConfig(font_size=32, line_height=1.3),
+    "h6": TypographyConfig(font_size=28, line_height=1.4),
+    "t":  TypographyConfig(font_size=20, line_height=1.4),
+    "p":  TypographyConfig(font_size=18, line_height=1.5),
+    "b":  TypographyConfig(font_size=14, line_height=1.5),
     "c":  TypographyConfig(font_size=12, line_height=1.4),
 }
 
