@@ -70,7 +70,7 @@ class AppLayout(QWidget):
         self.setLayout(outer)
 
     def _build_stepper(self, current_step):
-        steps = [(1, "Upload"), (2, "Preprocessing"), (3, "Run"), (4, "Result")]
+        steps = [(1, "Upload"), (2, "Preview"), (3, "Run"), (4, "Result")]
         layout = HBox(spacing=4, margin=(0, 0, 0, 0), align=Qt.AlignmentFlag.AlignVCenter)
 
         for i, (num, label) in enumerate(steps):

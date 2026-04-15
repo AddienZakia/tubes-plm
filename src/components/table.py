@@ -108,6 +108,12 @@ class Table(QTableWidget):
                 self.setItem(row_idx, col_idx, item)
 
         self.resizeRowsToContents()
+        
+        
+        row_height = self.rowHeight(0) if rows else 40
+        header_height = self.horizontalHeader().height()
+        total_height = header_height + (row_height * len(rows)) + 4
+        self.setFixedHeight(total_height)
 
     def clear_rows(self):
         self.setRowCount(0)

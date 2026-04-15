@@ -47,10 +47,10 @@ class MainWindow(QMainWindow):
  
         # ── buat semua halaman ──────────────────────────────────
         self.page_home        = self._wrap_home(HomePage(self), current_step=1)
-        self.page_upload_a    = self._wrap_app(UploadPageA(self),    current_step=1)
-        self.page_upload_b    = self._wrap_app(UploadPageB(self),    current_step=1)
-        self.page_preview     = self._wrap_app(PreviewPage(self),    current_step=2)
-        self.page_result      = self._wrap_app(ResultPage(self),     current_step=4)
+        self.page_upload_a    = self._wrap_app(UploadPageA(self),    current_step=2)
+        self.page_upload_b    = self._wrap_app(UploadPageB(self),    current_step=2)
+        self.page_preview     = self._wrap_app(PreviewPage(self),    current_step=3)
+        self.page_result      = self._wrap_app(ResultPage(self),     current_step=5)
         # self.page_recent      = self._wrap_app(RecentPage(self),     current_step=1)
  
         # ── daftarkan ke stack (urutan = index) ─────────────────
