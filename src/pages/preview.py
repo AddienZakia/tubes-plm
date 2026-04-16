@@ -49,6 +49,93 @@ def load_data():
         all_rows.append([a[0], avg_str(a[1],b[1]), avg_str(a[2],b[2]), avg_str(a[3],b[3])])
     return {"2018": rows_2018, "2021": rows_2021, "All": all_rows}
 
+class DataTable(QTableWidget):
+    """QTableWidget dengan kolom rata dan scroll vertikal."""
+    COLUMNS = ["Country", "All Ind", "Gen Y", "Gen X"]
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setColumnCount(len(self.COLUMNS))
+        self.setHorizontalHeaderLabels(self.COLUMNS)
+
+        # ── Tampilan umum ──
+        self.setShowGrid(False)
+        self.setAlternatingRowColors(True)
+        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.verticalHeader().setVisible(False)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+
+        # ── Lebar kolom rata (stretch semua) ──
+        header = self.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        header.setDefaultAlignment(Qt.AlignmentFlag.AlignCenter)
+        header.setFont(QFont("Segoe UI", 10, QFont.Weight.Bold))
+
+        # ── Tinggi baris ──
+        self.verticalHeader().setDefaultSectionSize(42)
+
+        # ── Scroll hanya vertikal, horizontal disembunyikan ──
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+
+        # ── Stylesheet ──
+        self.setStyleSheet("""
+            QTableWidget {
+                background-color: #FFFFFF;
+                border: none;
+                border-radius: 10px;
+                font-family: 'Segoe UI';
+                font-size: 10pt;
+                color: #1A2A4A;
+                outline: none;
+            }
+            QTableWidget::item {
+                padding: 8px 12px;
+                border-bottom: 1px solid #EEF1F6;
+            }
+            QTableWidget::item:selected {
+                background-color: #EBF4FF;
+                color: #1A2A4A;
+            }
+            QHeaderView::section {
+                background-color: #F4F7FB;
+                color: #4A5568;
+                padding: 10px 12px;
+                border: none;
+                border-bottom: 2px solid #DDE4EF;
+                font-weight: bold;
+                font-size: 10pt;
+            }
+            QScrollBar:vertical {
+                background: #F4F7FB;
+                width: 8px;
+                border-radius: 4px;
+            }
+            QScrollBar::handle:vertical {
+                background: #BCC8DC;
+                border-radius: 4px;
+                min-height: 30px;
+            }
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
+            }
+            QTableWidget::item:alternate {
+                background-color: #F9FAFB;
+            }
+        """)
+
+    def set_rows(self, rows: list):
+        self.setRowCount(len(rows))
+        for r_idx, row in enumerate(rows):
+            for c_idx, val in enumerate(row):
+                item = QTableWidgetItem(str(val))
+                # Country rata kiri, angka rata tengah
+                if c_idx == 0:
+                    item.setTextAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
+                else:
+                    item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.setItem(r_idx, c_idx, item)
 
 class Preview(QWidget):
     def __init__(self, router, parent=None):
@@ -81,11 +168,12 @@ class Preview(QWidget):
             filter_row.addWidget(btn)
  
         # Tabel
-        self.table = PaginationTable(
-            columns=["Country", "All Ind", "Gen Y", "Gen X"],
-            rows=[],
-            page_size=10,
-        )
+        self.table = DataTable()
+        # self.table = PaginationTable(
+        #     columns=["Country", "All Ind", "Gen Y", "Gen X"],
+        #     rows=[],
+        #     page_size=10,
+        # )
  
         # Tombol nav
         nav = HBox(spacing=12)
@@ -166,7 +254,7 @@ class Preview(QWidget):
             }
             result_page = self.router.page_result.findChild(ResultPage)
             if result_page:
-                result_page.load_result(columns, rows, stats)
+                result_page.load_result(columns, rows, stats, model.norm_data, model.labels, model.countries)
         except Exception as e:
             print(f"[PreviewPage] FCM gagal: {e}")
  

@@ -92,7 +92,7 @@ class FCM(Utilitas):
         return result
     
     def init_membership(self, n):
-        random.seed(42)
+        # random.seed(42)
 
         U = []
 
@@ -189,6 +189,11 @@ class FCM(Utilitas):
     def fit(self, max_iter=100, epsilon=1e-4):
         norm_data = list(self.normalisation_data().values())
         n = len(norm_data)
+
+        self.norm_data =norm_data
+        self.countries = list(self.data.keys())
+
+        print(self.norm_data)
 
         U = self.init_membership(n)
         history_J = []

@@ -123,11 +123,15 @@ class MainWindow(QWidget):
         return scroll
  
     # ── dipanggil dari PreviewPage ───────────────────────────────
-    def load_result(self, columns, rows, stats: dict):
+    def load_result(self, columns, rows, stats: dict, norm_data, labels, countries):
         self._columns   = columns
         self._rows      = rows
         self._stats     = stats
         self._history_J = stats.get("history_J", [])
+        self._norm_data = norm_data
+        self._labels = labels
+        self._countries = countries
+
  
         # Perbarui statistik
         old = self.stats_frame
@@ -158,18 +162,11 @@ class MainWindow(QWidget):
  
     def _fill_graph(self):
         
+        arr = np.array(self._norm_data)
 
-        # Ambil koordinat dari t-SNE, bukan membership
-        membership = []
-        labels, annotations = [], []
-        for row in self._rows:
-            membership.append([float(v) for v in row[2:-1]])  # kolom cluster
-            label_idx = int(row[-1].replace("Cluster ", ""))
-            labels.append(label_idx)
-            annotations.append(str(row[1]))
+        projected = TSNE(n_components=2, perplexity=4, random_state=42)\
+            .fit_transform(arr)
 
-        arr = np.array(membership)
-        projected = TSNE(n_components=2, perplexity=4, random_state=42).fit_transform(arr)
         points = projected.tolist()
 
         chart = ScatterPlot(
@@ -177,8 +174,34 @@ class MainWindow(QWidget):
             x_label="Dimension 1",
             y_label="Dimension 2",
         )
-        n_clusters = len(set(labels)) or 1
-        chart.plot(points=points, labels=labels, annotations=annotations, n_clusters=n_clusters)
+
+        chart.plot(
+            points=points,
+            labels=self._labels,
+            annotations=self._countries,
+            n_clusters=len(set(self._labels))
+        )
+
+        # Ambil koordinat dari t-SNE, bukan membership
+        # membership = []
+        # labels, annotations = [], []
+        # for row in self._rows:
+        #     membership.append([float(v) for v in row[2:-1]])  # kolom cluster
+        #     label_idx = int(row[-1].replace("Cluster ", ""))
+        #     labels.append(label_idx)
+        #     annotations.append(str(row[1]))
+
+        # arr = np.array()
+        # projected = TSNE(n_components=2, perplexity=4, random_state=42).fit_transform(arr)
+        # points = projected.tolist()
+
+        # chart = ScatterPlot(
+        #     title="FCM Clustering Result",
+        #     x_label="Dimension 1",
+        #     y_label="Dimension 2",
+        # )
+        # n_clusters = len(set(labels)) or 1
+        # chart.plot(points=points, labels=labels, annotations=annotations, n_clusters=n_clusters)
 
         # Elbow chart tetap sama
         line_chart = LineChart(title="Elbow Method", x_label="Iterasi", y_label="J")

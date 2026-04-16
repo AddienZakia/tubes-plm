@@ -81,7 +81,7 @@ class MainWindow(QWidget):
     @staticmethod
     def _save_recent(path: str):
         import json, datetime
-        recent_path = "data_recent.json"
+        recent_path = "src/contents/data_recent.json"
         data = []
         if os.path.exists(recent_path):
             try:
