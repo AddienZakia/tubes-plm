@@ -8,7 +8,7 @@ class Files:
     def read_data_csv(self, path):
         df = pd.read_csv(
             path,
-            delimiter=',',      
+            delimiter=';',      
             encoding='utf-8',   
         )
 

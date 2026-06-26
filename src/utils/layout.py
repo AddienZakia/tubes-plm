@@ -26,15 +26,15 @@ class AppLayout(QWidget):
             os.path.join(base_dir, "../../assets/image/layout-bg.png")
         )
 
-        root = VBox(spacing=0, margin=(16, 16, 16, 16))
+        root = VBox(spacing=0, margin=(32, 20, 32, 20))
         bg = BgWidget(image_path)
         bg.setLayout(root)
 
         header = HBox(spacing=0, margin=(0, 0, 0, 14))
 
         brand = HBox(spacing=6, margin=(0, 0, 0, 0))
-        brand.addWidget(Typography("FCM", variant='h5', weight="bold", color=Colors.primary_hover))
-        brand.addWidget(Typography("Clustering App", variant='h5', weight="bold", color=Colors.neutral_black))
+        brand.addWidget(Typography("FCM", variant='t', weight="bold", color=Colors.primary_hover))
+        brand.addWidget(Typography("Clustering App", variant='t', weight="bold", color=Colors.neutral_black))
 
         # Stepper
         stepper = self._build_stepper(current_step)
@@ -70,7 +70,7 @@ class AppLayout(QWidget):
         self.setLayout(outer)
 
     def _build_stepper(self, current_step):
-        steps = [(1, "Upload"), (2, "Preprocessing"), (3, "Run"), (4, "Result")]
+        steps = [(1, "Upload"), (2, "Preview"), (3, "Run"), (4, "Result")]
         layout = HBox(spacing=4, margin=(0, 0, 0, 0), align=Qt.AlignmentFlag.AlignVCenter)
 
         for i, (num, label) in enumerate(steps):

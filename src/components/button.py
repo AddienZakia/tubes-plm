@@ -5,7 +5,7 @@ from typing import Literal, Optional
 from .colors import Colors
 
 
-ButtonVariant = Literal["primary", "success", "warning", "error", "alternative", "outlined"]
+ButtonVariant = Literal["primary", "success", "warning", "error", "alternative", "outlined", "outline_blue"]
 ButtonSize    = Literal["sm", "md", "lg"]
 
 
@@ -69,6 +69,16 @@ _VARIANT_STYLE: dict[str, dict] = {
         "text_disabled":   Colors.neutral_60,
         "border":          f"1px solid {Colors.neutral_60}",
         "border_disabled": f"1px solid {Colors.neutral_60}",
+    },
+    "outline_blue": {
+        "bg":              Colors.neutral_10,
+        "bg_hover":        Colors.neutral_30,
+        "bg_active":       Colors.neutral_40,
+        "bg_disabled":     Colors.neutral_30,
+        "text":            Colors.primary_main,
+        "text_disabled":   Colors.neutral_60,
+        "border":          f"1px solid {Colors.primary_main}",
+        "border_disabled": f"1px solid {Colors.primary_active}",
     },
 }
 
@@ -136,4 +146,7 @@ class Button(QPushButton):
                 cursor:           not-allowed;
             }}
         """)
-        
+
+    def set_variant(self, variant):
+        self.variant = variant
+        self._apply_style()

@@ -1,23 +1,26 @@
+import os
+
 from PyQt6.QtWidgets import QApplication, QMainWindow
 import sys
 
 from src.utils.font import Fonts
 from src.utils.layout import AppLayout  
+from .preview import Preview as PreviewPage
 
 
 # ================== MAIN WINDOW ==================
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setFixedSize(1000, 750)
+# class MainWindow(QMainWindow):
+#     def __init__(self):
+#         super().__init__()
+#         self.setFixedSize(1000, 750)
 
-        self.app_layout = AppLayout(current_step=1)
+#         self.app_layout = AppLayout(current_step=1)
 
-        # isi konten dengan halaman Upload
-        page = UploadPage()
-        self.app_layout.set_content(page)
+#         # isi konten dengan halaman Upload
+#         page = UploadPage()
+#         self.app_layout.set_content(page)
 
-        self.setCentralWidget(self.app_layout)
+#         self.setCentralWidget(self.app_layout)
 
 
 # ================== IMPORT UI ==================
@@ -37,9 +40,9 @@ from src.components.colors import Colors
 
 # ================== FILE CARD ==================
 class FileInfoCard(QWidget):
+    """Kartu info file yang sudah diupload."""
     def __init__(self, parent=None):
         super().__init__(parent)
-
         self.setStyleSheet(f"""
             FileInfoCard {{
                 border: 1px solid {Colors.neutral_30};
@@ -48,108 +51,42 @@ class FileInfoCard(QWidget):
             }}
         """)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-
-        root = HBox(spacing=12, margin=(16, 14, 16, 14),  align=Qt.AlignmentFlag.AlignVCenter)
+ 
+        root = HBox(spacing=12, margin=(16, 14, 16, 14), align=Qt.AlignmentFlag.AlignVCenter)
         self.setLayout(root)
-
+ 
         icon_lbl = QLabel("📄")
         icon_lbl.setStyleSheet("font-size: 28px; background: transparent;")
         icon_lbl.setFixedWidth(36)
         root.addWidget(icon_lbl)
-
+ 
         meta_col = VBox(spacing=2)
         meta_col.setContentsMargins(0, 0, 0, 0)
-
-        self.lbl_name = Typography("data-plm.csv", variant="t", weight="bold",
-                                   color=Colors.neutral_black)
-        self.lbl_meta = Typography(
-            "Just uploaded • 4.2 KB • UTF-8",
-            variant="c",
-            color=Colors.neutral_60,
-        )
-
+ 
+        self.lbl_name = Typography("—", variant="t", weight="bold", color=Colors.neutral_black)
+        self.lbl_meta = Typography("—", variant="c", color=Colors.neutral_60)
+ 
         meta_col.addWidget(self.lbl_name)
         meta_col.addWidget(self.lbl_meta)
-
+ 
         meta_widget = QWidget()
         meta_widget.setLayout(meta_col)
         meta_widget.setStyleSheet("background: transparent;")
         root.addWidget(meta_widget, stretch=1)
-
-        self.lbl_rows = Typography("35 baris", variant="c", color=Colors.neutral_70)
-        self.lbl_cols = Typography("15 kolom", variant="c", color=Colors.neutral_70)
+ 
+        self.lbl_rows = Typography("—", variant="c", color=Colors.neutral_70)
+        self.lbl_cols = Typography("—", variant="c", color=Colors.neutral_70)
         root.addWidget(self.lbl_rows)
         root.addWidget(self.lbl_cols)
-
-
-    @staticmethod
-    def _make_badge(text: str, fg: str, bg: str) -> QLabel:
-        lbl = QLabel(text)
-        lbl.setStyleSheet(f"""
-            QLabel {{
-                background: {bg};
-                color: {fg};
-                border-radius: 6px;
-                padding: 3px 10px;
-                font-size: 12px;
-                font-weight: 600;
-                font-family: 'Plus Jakarta Sans';
-            }}
-        """)
-        lbl.setFixedHeight(26)
-        return lbl
-
-    def update_file_info(self, filename: str, size_kb: float,
-                         n_rows: int, n_cols: int, valid: bool):
+ 
+    def update_file_info(self, filename, size_kb, n_rows, n_cols):
         self.lbl_name.setText(filename)
         self.lbl_meta.setText(f"Just uploaded • {size_kb:.1f} KB • UTF-8")
         self.lbl_rows.setText(f"{n_rows} baris")
         self.lbl_cols.setText(f"{n_cols} kolom")
-
-        if valid:
-            self.badge.setText("✔  Valid CSV")
-        else:
-            self.badge.setText("✘  Invalid CSV")
-
-
-# ================== LEGEND ==================
-class ClusterLegend(QWidget):
-    CLUSTERS = [
-        ("Nordik / Eropa Barat", "#3b82f6"),
-        ("Eropa Tengah", "#22c55e"),
-        ("Eropa Selatan", "#f59e0b"),
-        ("Eropa Timur / Balkan", "#a855f7"),
-    ]
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setStyleSheet("background: transparent;")
-
-        bar = HBox(spacing=20, margin=(4, 0, 4, 0), align=Qt.AlignmentFlag.AlignCenter )
-        self.setLayout(bar)
-
-        for label, color in self.CLUSTERS:
-            dot = QLabel("●")
-            dot.setStyleSheet(
-                f"color: {color}; font-size: 14px; background: transparent;"
-            )
-            dot.setFixedWidth(16)
-
-            txt = Typography(label, variant="c", color=Colors.neutral_70)
-
-            pair = HBox(spacing=4)
-            pair.addWidget(dot)
-            pair.addWidget(txt)
-
-            wrapper = QWidget()
-            wrapper.setLayout(pair)
-            wrapper.setStyleSheet("background: transparent;")
-            bar.addWidget(wrapper)
-
-
-
-# ================== UPLOAD PAGE ==================
-class UploadPage(QWidget):
+ 
+ 
+class UploadPageB(QWidget):
     COLUMNS = [
         "#", "Country",
         "All_2018", "All_2021",
@@ -157,50 +94,86 @@ class UploadPage(QWidget):
         "GenX_2018", "GenX_2021",
         "Men_GenY_18", "Men_GenY_21",
     ]
-
-    SAMPLE_ROWS = [
-        [1, "Germany", 18, 17, 28, 25, 18, 19, 32, 28],
-        [2, "France", 14, 13, 24, 21, 14, 15, 27, 24],
-    ]
-
-    def __init__(self, parent=None):
+ 
+    def __init__(self, router, parent=None):
         super().__init__(parent)
-        self._csv_rows = list(self.SAMPLE_ROWS)
+        self.router     = router
+        self._csv_path  = None
+        self._csv_rows  = []
         self._build_ui()
-
+ 
     def _build_ui(self):
         root = VBox(spacing=16)
         self.setLayout(root)
-
+ 
         text_header = HBox(spacing=4)
         num   = Typography("1   .", variant='p', weight="bold", color=Colors.primary_active)
         title = Typography("Upload Data", variant='p', weight="bold", color=Colors.neutral_black)
         text_header.addWidget(num)
         text_header.addWidget(title)
         text_header.setAlignment(Qt.AlignmentFlag.AlignLeft)
-
-        root.addLayout(text_header)
-
+ 
         self.file_card = FileInfoCard()
-        root.addWidget(self.file_card)
-
+ 
         self.table = PaginationTable(
             columns=self.COLUMNS,
-            rows=self._csv_rows,
+            rows=[],
             page_size=8,
         )
+ 
+        button_container = HBox(spacing=12)
+        btn_back = Button("Back", variant="outline_blue", size="md")
+        btn_next = Button("Next", variant="primary",      size="md")
+        button_container.addWidget(btn_back)
+        button_container.addStretch()
+        button_container.addWidget(btn_next)
+ 
+        root.addLayout(text_header)
+        root.addWidget(self.file_card)
         root.addWidget(self.table, stretch=1)
+        root.addLayout(button_container)
+ 
+        # ── navigasi ──────────────────────────────────────────
+        btn_back.clicked.connect(self.router.show_upload_a)
+        btn_next.clicked.connect(self._go_next)
+ 
+    def load_file(self, path: str, raw_rows: list):
+        """Dipanggil oleh UploadPageA setelah file dipilih."""
+        self._csv_path = path
+        size_kb = os.path.getsize(path) / 1024
+ 
+        # Baris pertama = header, sisanya = data
+        data_rows = raw_rows[1:] if len(raw_rows) > 1 else []
+        n_rows = len(data_rows)
+        n_cols = len(raw_rows[0]) if raw_rows else 0
+ 
+        self.file_card.update_file_info(
+            os.path.basename(path), size_kb, n_rows, n_cols
+        )
+ 
+        # Tampilkan 10 kolom pertama di tabel preview
+        table_rows = []
+        for i, row in enumerate(data_rows):
+            preview = [i + 1] + row[:9]   # "#" + max 9 kolom
+            table_rows.append(preview)
+ 
+        self._csv_rows = table_rows
+        self.table.set_rows(table_rows)
+ 
+    def _go_next(self):
+        preview = self.router.page_preview.findChild(PreviewPage)
+        if preview and self._csv_path:
+            preview.load_csv(self._csv_path)
+        self.router.go_to(3)
 
-        self.legend = ClusterLegend()
-        root.addWidget(self.legend)
 
 
 # ================== RUN APP ==================
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    app.setStyle("Fusion")
-    Fonts().load_fonts()
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     app.setStyle("Fusion")
+#     Fonts().load_fonts()
 
-    win = MainWindow()
-    win.show()
-    sys.exit(app.exec())
+#     win = MainWindow()
+#     win.show()
+#     sys.exit(app.exec())
